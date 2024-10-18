@@ -1,0 +1,32 @@
+# Copyright Henok M.
+
+services:
+  postgresql:
+    image: docker.io/bitnami/postgresql:17
+    volumes:
+      - 'postgresql_data:/bitnami/postgresql'
+    environment:
+        - POSTGRESQL_USERNAME=bn_odoo
+        - POSTGRESQL_PASSWORD=PASSWORD
+        - POSTGRESQL_DATABASE=bitnami_odoo
+  odoo:
+    image: docker.io/bitnami/odoo:17
+    ports:
+      - '8069:8069'
+    volumes:
+      - 'odoo_data:/bitnami/odoo'
+    depends_on:
+      - postgresql
+    environment:
+      - ODOO_EMAIL=user@example.com
+      - ODOO_PASSWORD=bitnami
+      - ODOO_DATABASE_HOST=postgresql
+      - ODOO_DATABASE_PORT_NUMBER=5432
+      - ODOO_DATABASE_USER=bn_odoo
+      - ODOO_DATABASE_PASSWORD=PASSWORD
+      - ODOO_DATABASE_NAME=bitnami_odoo
+volumes:
+  postgresql_data:
+    driver: local
+  odoo_data:
+    driver: local
